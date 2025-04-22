@@ -65,3 +65,5 @@ group :test do
 end
 
 gem "httparty", "~> 0.23.1"
+
+gem "dotenv", "~> 3.1"
