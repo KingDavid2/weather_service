@@ -1,0 +1,1 @@
+web: SECRET_KEY_BASE_DUMMY=1 bin/rails assets:precompile && bin/rails db:prepare && RAILS_ENV=production bin/rails server -b 0.0.0.0 -p ${PORT:-3000}
