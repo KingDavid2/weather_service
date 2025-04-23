@@ -1,7 +1,7 @@
 class GetLocation
   include HTTParty
   include HttpErrorHandler
-  base_uri "http://api.openweathermap.org/geo/1.0"
+  base_uri "https://api.openweathermap.org/geo/1.0"
 
   def self.search(city: " ", state: " ", country: "US")
     query_string = handle_attributes(city: city, state: state, country: country)

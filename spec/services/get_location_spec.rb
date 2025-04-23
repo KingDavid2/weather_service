@@ -7,7 +7,7 @@ RSpec.describe GetLocation do
       let(:q) { "#{city}, ,US" }
 
       before do
-        stub_request(:get, "http://api.openweathermap.org/geo/1.0/direct")
+        stub_request(:get, "https://api.openweathermap.org/geo/1.0/direct")
           .with(query: {
             q:,
             appid: ENV['OPENWEATHER_API_KEY'],
@@ -42,7 +42,7 @@ RSpec.describe GetLocation do
     end
     context "when the location is not found" do
       before do
-        stub_request(:get, "http://api.openweathermap.org/geo/1.0/direct")
+        stub_request(:get, "https://api.openweathermap.org/geo/1.0/direct")
           .with(query: {
             q: "InvalidCity, ,US",
             appid: ENV["OPENWEATHER_API_KEY"],

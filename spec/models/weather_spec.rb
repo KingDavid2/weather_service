@@ -83,4 +83,18 @@ RSpec.describe Weather, type: :model do
       expect(result).not_to include(old_weather)
     end
   end
+
+  describe "#image_url" do
+    it "returns the correct OpenWeatherMap icon URL" do
+      weather = described_class.new(
+        data: {
+          "weather" => [
+            { "icon" => "04d" }
+          ]
+        }
+      )
+
+      expect(weather.image_url).to eq("https://openweathermap.org/img/wn/04d@2x.png")
+    end
+  end
 end

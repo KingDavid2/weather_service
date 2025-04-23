@@ -1,12 +1,13 @@
 class WeathersController < ApplicationController
   def index
     if params[:lat] && params[:lon]
-      result = Weather.search(lat: params[:lat], lon: params[:lon]).data
+      result = Weather.search(lat: params[:lat], lon: params[:lon])
 
-      if result["error"].present?
-        flash.now[:alert] = result["error"]
+      if result.data["error"].present?
+        flash.now[:alert] = result.data["error"]
       else
-        @current_weather = result
+        @current_weather = result.data
+        @current_weather_image_url = result.image_url
       end
     end
   end

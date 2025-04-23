@@ -40,11 +40,11 @@ RSpec.describe "Weathers", type: :request do
         get root_path, params: { lat: lat, lon: lon }
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Your current location is lat: 40.23684315, lon: -111.70234036058324")
-        expect(response.body).to include("Temperature: 66.04°F")
-        expect(response.body).to include("Feels like: 63.37°F")
-        expect(response.body).to include("Max: 67.06°F")
-        expect(response.body).to include("Min: 64.92°F")
+        expect(response.body).to include("Weather for lat: 40.23684315, lon: -111.70234036058324")
+        expect(response.body).to include("66.04°F")
+        expect(response.body).to include("63.37°F")
+        expect(response.body).to include("67.06°F")
+        expect(response.body).to include("64.92°F")
       end
     end
 

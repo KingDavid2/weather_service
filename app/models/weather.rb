@@ -13,4 +13,12 @@ class Weather < ApplicationRecord
       fetched_at: Time.current
     )
   end
+
+  def image_url
+    base_url = "https://openweathermap.org/img/wn/"
+    icon = data&.dig("weather", 0, "icon")
+    return nil unless icon
+
+    "#{base_url}#{icon}@2x.png"
+  end
 end

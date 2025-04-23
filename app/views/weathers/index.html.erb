@@ -1,45 +1,70 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-50">
   <div class="p-6 w-full max-w-md text-center">
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Weather Service</h1>
+    <hr class="mt-6 mb-12 border-t border-gray-300">
+
     <% if flash[:alert] %>
     <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
       <%= flash[:alert] %>
     </div>
     <% end %>
 
-    <%= form_with url: search_weathers_path, method: :get, local: true, class: "mb-8 space-y-4" do %>
+    <% if @current_weather %>
+    <p class="text-md text-gray-600">
+      Weather for <%= "lat: #{@current_weather['coord']['lat']}, lon: #{@current_weather['coord']['lon']}" %>
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 items-center text-center">
+
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm text-gray-500">Feels like:</p>
+          <p class="text-lg text-gray-800 font-semibold"><%= @current_weather['main']['feels_like'] %>°F</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Max:</p>
+          <p class="text-lg text-gray-800 font-semibold"><%= @current_weather['main']['temp_max'] %>°F</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Min:</p>
+          <p class="text-lg text-gray-800 font-semibold"><%= @current_weather['main']['temp_min'] %>°F</p>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-4xl font-semibold">
+          <%= @current_weather['main']['temp'] %>°F
+        </h2>
+      </div>
+
+      <div>
+        <% if @current_weather_image_url.present? %>
+        <p>
+          <%= image_tag @current_weather_image_url, alt: "Weather Icon", class: "mx-auto" %>
+        </p>
+        <% end %>
+        <p class="text-lg text-gray-800 capitalize">
+          <%= @current_weather['weather'].first['description'] %>
+        </p>
+      </div>
+    </div>
+    <% end %>
+
+    <hr class="my-6 border-t border-gray-300">
+
+    <%= form_with url: search_weathers_path, method: :get, local: true, class: "mt-4 mb-8 space-y-4" do %>
     <div>
       <%= label_tag :city, "City", class: "block text-left mb-1 text-gray-700" %>
-      <%= text_field_tag :city, params[:city], class: "w-full border-gray-300 rounded-md p-2" %>
+      <%= text_field_tag :city, params[:city], class: "w-full border border-gray-300 bg-white rounded-md p-2" %>
     </div>
     <div>
       <%= label_tag :state, "State", class: "block text-left mb-1 text-gray-700" %>
-      <%= text_field_tag :state, params[:state], class: "w-full border-blue-700 rounded-md p-2" %>
+      <%= text_field_tag :state, params[:state], class: "w-full border border-gray-300 bg-white rounded-md p-2" %>
     </div>
     <button type="button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-3" onclick="requestCurrentLocation()">
       Back to my current location
     </button>
     <%= submit_tag "Search Weather", class: "bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" %>
-    <% end %>
-
-    <% if @current_weather %>
-    <p class="text-md text-gray-600">
-      Location is <%= "lat: #{@current_weather['coord']['lat']}, lon: #{@current_weather['coord']['lon']}" %>
-    </p>
-    <h2 class="text-2xl mt-6 font-semibold">
-      Temperature: <%= @current_weather['main']['temp'] %>°F
-    </h2>
-    <p class="text-lg text-gray-800">
-      <%= @current_weather['weather'].first['description'] %>
-    </p>
-    <p class="text-lg text-gray-800">
-      Feels like: <%= @current_weather['main']['feels_like'] %>°F
-    </p>
-    <p class="text-lg text-gray-800">
-      Max: <%= @current_weather['main']['temp_max'] %>°F
-    </p>
-    <p class="text-lg text-gray-800">
-      Min: <%= @current_weather['main']['temp_min'] %>°F
-    </p>
     <% end %>
   </div>
 </div>
