@@ -1,5 +1,6 @@
 class GetWeather
   include HTTParty
+  include HttpErrorHandler
   base_uri "https://api.openweathermap.org/data/2.5/"
 
   def self.search(lat:, lon:, units: "imperial")
@@ -9,22 +10,7 @@ class GetWeather
         lon:,
         units:,
         appid: ENV["OPENWEATHER_API_KEY"]
-      }
-      )
+      }).parsed_response
     end
-  end
-
-  def self.with_error_handler
-    response = yield
-
-    if response["cod"] != 200
-      return { error: response["message"] || "API error", code: response["cod"] }
-    end
-
-    response
-  rescue HTTParty::Error => e
-    { error: "HTTParty error: #{e.message}" }
-  rescue StandardError => e
-    { error: "Unexpected error: #{e.message}" }
   end
 end
