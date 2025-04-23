@@ -19,6 +19,10 @@ RSpec.describe GetWeather do
           .to_return(
             status: 200,
             body: {
+              "coord"=> {
+                  "lon": lon,
+                  "lat": lat
+              },
               "weather" => [ { "main" => "Clear", "description" => "clear sky" } ],
               "main" => { "temp"=>66.04,
                           "feels_like"=>63.37,
@@ -34,7 +38,10 @@ RSpec.describe GetWeather do
       it "returns parsed weather data" do
         result = described_class.search(lat: lat, lon: lon, units: units)
 
+        expect(result["coord"]["lat"]).to eq(40.23684315)
+        expect(result["coord"]["lon"]).to eq(-111.70234036058324)
         expect(result["weather"].first["main"]).to eq("Clear")
+        expect(result["weather"].first["description"]).to eq("clear sky")
         expect(result["main"]["temp"]).to eq(66.04)
         expect(result["main"]["feels_like"]).to eq(63.37)
         expect(result["main"]["temp_min"]).to eq(64.92)

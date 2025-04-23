@@ -1,0 +1,41 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="p-6 w-full max-w-md text-center">
+    <% if flash[:alert] %>
+    <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
+      <%= flash[:alert] %>
+    </div>
+    <% end %>
+
+    <% if @current_weather %>
+    <p class="text-md text-gray-600">
+      Your current location is <%= "lat: #{@current_weather['coord']['lat']}, lon: #{@current_weather['coord']['lon']}" %>
+    </p>
+    <h2 class="text-2xl mt-6 font-semibold">
+      Temperature: <%= @current_weather['main']['temp'] %>°F
+    </h2>
+    <p class="text-lg text-gray-800">
+      <%= @current_weather['weather'].first['description'] %>
+    </p>
+    <p class="text-lg text-gray-800">
+      Feels like: <%= @current_weather['main']['feels_like'] %>°F
+    </p>
+    <p class="text-lg text-gray-800">
+      Max: <%= @current_weather['main']['temp_max'] %>°F
+    </p>
+    <p class="text-lg text-gray-800">
+      Min: <%= @current_weather['main']['temp_min'] %>°F
+    </p>
+    <% end %>
+  </div>
+</div>
+<script>
+  const url = new URL(window.location.href)
+
+  if (!url.searchParams.get("lat") || !url.searchParams.get("lon")) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      url.searchParams.set('lat', position.coords.latitude)
+      url.searchParams.set('lon', position.coords.longitude)
+      window.location.href = url.toString()
+    })
+  }
+</script>
