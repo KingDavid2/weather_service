@@ -74,7 +74,7 @@
 </div>
 <script>
   function requestCurrentLocation() {
-    const url = new URL(window.location.origin + window.location.pathname)
+    const url = new URL("/", window.location.origin)
 
     navigator.geolocation.getCurrentPosition(function(position) {
       url.searchParams.set('lat', position.coords.latitude)
