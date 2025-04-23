@@ -20,8 +20,7 @@
       <%= "lat: #{@current_weather.lat}, lon: #{@current_weather.lon}" %>
     </p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 items-center text-center">
-
-      <div class="space-y-4">
+      <div class="space-y-4 order-3 md:order-1">
         <div>
           <p class="text-sm text-gray-500">Feels like:</p>
           <p class="text-lg text-gray-800 font-semibold"><%= @current_weather.data['main']['feels_like'] %>°F</p>
@@ -36,13 +35,13 @@
         </div>
       </div>
 
-      <div>
+      <div class="order-1 md:order-2">
         <h2 class="text-4xl font-semibold">
           <%= @current_weather.data['main']['temp'] %>°F
         </h2>
       </div>
 
-      <div>
+      <div class="order-2 md:order-3">
         <% if @current_weather.image_url.present? %>
         <p>
           <%= image_tag @current_weather.image_url, alt: "Weather Icon", class: "mx-auto" %>
