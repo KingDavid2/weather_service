@@ -6,8 +6,7 @@ class WeathersController < ApplicationController
       if result.data["error"].present?
         flash.now[:alert] = result.data["error"]
       else
-        @current_weather = result.data
-        @current_weather_image_url = result.image_url
+        @current_weather = result
       end
     end
   end

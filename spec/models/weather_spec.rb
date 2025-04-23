@@ -112,4 +112,20 @@ RSpec.describe Weather, type: :model do
       expect(weather.image_url).to eq("https://openweathermap.org/img/wn/04d@2x.png")
     end
   end
+
+  describe "#city_state" do
+    context "when state is present" do
+      it "returns city and state separated by comma" do
+        model = described_class.new(city: "Orem", state: "Utah")
+        expect(model.city_state).to eq("Orem, Utah")
+      end
+    end
+
+    context "when state is blank" do
+      it "returns only city" do
+        model = described_class.new(city: "Orem", state: nil)
+        expect(model.city_state).to eq("Orem")
+      end
+    end
+  end
 end

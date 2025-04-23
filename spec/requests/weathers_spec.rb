@@ -63,7 +63,8 @@ RSpec.describe "Weathers", type: :request do
         get root_path, params: { lat: lat, lon: lon }
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Weather for lat: 40.23684315, lon: -111.70234036058324")
+        expect(response.body).to include("Provo, Utah")
+        expect(response.body).to include("lat: 40.23684315, lon: -111.70234036058324")
         expect(response.body).to include("66.04°F")
         expect(response.body).to include("63.37°F")
         expect(response.body).to include("67.06°F")

@@ -11,40 +11,45 @@
     <% end %>
 
     <% if @current_weather %>
+    <div>
+      <h3 class="text-2xl font-semibold">
+        <%= @current_weather.city_state %>
+      </h3>
+    </div>
     <p class="text-md text-gray-600">
-      Weather for <%= "lat: #{@current_weather['coord']['lat']}, lon: #{@current_weather['coord']['lon']}" %>
+      <%= "lat: #{@current_weather.lat}, lon: #{@current_weather.lon}" %>
     </p>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 items-center text-center">
 
       <div class="space-y-4">
         <div>
           <p class="text-sm text-gray-500">Feels like:</p>
-          <p class="text-lg text-gray-800 font-semibold"><%= @current_weather['main']['feels_like'] %>°F</p>
+          <p class="text-lg text-gray-800 font-semibold"><%= @current_weather.data['main']['feels_like'] %>°F</p>
         </div>
         <div>
           <p class="text-sm text-gray-500">Max:</p>
-          <p class="text-lg text-gray-800 font-semibold"><%= @current_weather['main']['temp_max'] %>°F</p>
+          <p class="text-lg text-gray-800 font-semibold"><%= @current_weather.data['main']['temp_max'] %>°F</p>
         </div>
         <div>
           <p class="text-sm text-gray-500">Min:</p>
-          <p class="text-lg text-gray-800 font-semibold"><%= @current_weather['main']['temp_min'] %>°F</p>
+          <p class="text-lg text-gray-800 font-semibold"><%= @current_weather.data['main']['temp_min'] %>°F</p>
         </div>
       </div>
 
       <div>
         <h2 class="text-4xl font-semibold">
-          <%= @current_weather['main']['temp'] %>°F
+          <%= @current_weather.data['main']['temp'] %>°F
         </h2>
       </div>
 
       <div>
-        <% if @current_weather_image_url.present? %>
+        <% if @current_weather.image_url.present? %>
         <p>
-          <%= image_tag @current_weather_image_url, alt: "Weather Icon", class: "mx-auto" %>
+          <%= image_tag @current_weather.image_url, alt: "Weather Icon", class: "mx-auto" %>
         </p>
         <% end %>
         <p class="text-lg text-gray-800 capitalize">
-          <%= @current_weather['weather'].first['description'] %>
+          <%= @current_weather.data['weather'].first['description'] %>
         </p>
       </div>
     </div>

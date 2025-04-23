@@ -25,4 +25,10 @@ class Weather < ApplicationRecord
 
     "#{base_url}#{icon}@2x.png"
   end
+
+  def city_state
+    return city.to_s if state.blank?
+
+    "#{city}, #{state}"
+  end
 end
