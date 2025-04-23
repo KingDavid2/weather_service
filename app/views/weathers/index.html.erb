@@ -15,12 +15,15 @@
       <%= label_tag :state, "State", class: "block text-left mb-1 text-gray-700" %>
       <%= text_field_tag :state, params[:state], class: "w-full border-blue-700 rounded-md p-2" %>
     </div>
+    <button type="button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-3" onclick="requestCurrentLocation()">
+      Back to my current location
+    </button>
     <%= submit_tag "Search Weather", class: "bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" %>
     <% end %>
 
     <% if @current_weather %>
     <p class="text-md text-gray-600">
-      Your current location is <%= "lat: #{@current_weather['coord']['lat']}, lon: #{@current_weather['coord']['lon']}" %>
+      Location is <%= "lat: #{@current_weather['coord']['lat']}, lon: #{@current_weather['coord']['lon']}" %>
     </p>
     <h2 class="text-2xl mt-6 font-semibold">
       Temperature: <%= @current_weather['main']['temp'] %>°F
@@ -41,13 +44,21 @@
   </div>
 </div>
 <script>
-  const url = new URL(window.location.href)
+  function requestCurrentLocation() {
+    const url = new URL(window.location.origin + window.location.pathname)
 
-  if (!url.searchParams.get("lat") || !url.searchParams.get("lon")) {
     navigator.geolocation.getCurrentPosition(function(position) {
       url.searchParams.set('lat', position.coords.latitude)
       url.searchParams.set('lon', position.coords.longitude)
       window.location.href = url.toString()
     })
   }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const url = new URL(window.location.href)
+
+    if (!url.searchParams.get("lat") || !url.searchParams.get("lon")) {
+      requestCurrentLocation()
+    }
+  })
 </script>
