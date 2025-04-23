@@ -6,6 +6,18 @@
     </div>
     <% end %>
 
+    <%= form_with url: search_weathers_path, method: :get, local: true, class: "mb-8 space-y-4" do %>
+    <div>
+      <%= label_tag :city, "City", class: "block text-left mb-1 text-gray-700" %>
+      <%= text_field_tag :city, params[:city], class: "w-full border-gray-300 rounded-md p-2" %>
+    </div>
+    <div>
+      <%= label_tag :state, "State", class: "block text-left mb-1 text-gray-700" %>
+      <%= text_field_tag :state, params[:state], class: "w-full border-blue-700 rounded-md p-2" %>
+    </div>
+    <%= submit_tag "Search Weather", class: "bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" %>
+    <% end %>
+
     <% if @current_weather %>
     <p class="text-md text-gray-600">
       Your current location is <%= "lat: #{@current_weather['coord']['lat']}, lon: #{@current_weather['coord']['lon']}" %>

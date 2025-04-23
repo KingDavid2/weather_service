@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get "weathers/index"
+  get "weathers/search", to: "weathers#search", as: :search_weathers
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

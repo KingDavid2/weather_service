@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe "Weathers", type: :request do
-  describe "GET /" do
-    let(:lat) { 40.23684315 }
-    let(:lon) { -111.70234036058324 }
-    let(:units) { 'imperial' }
-    let(:api_key) { ENV['OPENWEATHER_API_KEY'] }
+  let(:lat) { 40.23684315 }
+  let(:lon) { -111.70234036058324 }
+  let(:units) { 'imperial' }
+  let(:api_key) { ENV['OPENWEATHER_API_KEY'] }
 
+  describe "GET /" do
     context "when the call is successful" do
       before do
         stub_request(:get, "https://api.openweathermap.org/data/2.5/weather")
@@ -74,6 +74,40 @@ RSpec.describe "Weathers", type: :request do
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("wrong longitude")
+      end
+    end
+  end
+
+  describe "GET /search" do
+    context "when city or state is provided and location is found" do
+      before do
+        allow(GetLocation).to receive(:search).and_return({ "lat" => lat, "lon" => lon })
+      end
+
+      it "redirects to root_path with lat and lon params" do
+        get search_weathers_path, params: { city: "New York", state: "NY" }
+
+        expect(response).to redirect_to(root_path(lat: lat, lon: lon))
+      end
+    end
+
+    context "when GetLocation returns an error" do
+      before do
+        allow(GetLocation).to receive(:search).and_return({ error: "Not found", code: 404 })
+      end
+
+      it "renders index with alert flash" do
+        get search_weathers_path, params: { city: "InvalidCity" }
+
+        expect(response.body).to include("Not found")
+      end
+    end
+
+    context "when no city or state is provided" do
+      it "renders index with validation alert" do
+        get search_weathers_path
+
+        expect(response.body).to include("Please enter city or state.")
       end
     end
   end
