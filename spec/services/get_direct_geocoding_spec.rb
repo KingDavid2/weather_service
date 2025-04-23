@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe GetLocation do
+RSpec.describe GetDirectGeocoding do
   describe '.search' do
     context "When call is succesful" do
       let(:city) { "Utah" }
@@ -29,7 +29,7 @@ RSpec.describe GetLocation do
       end
 
       it 'returns parsed location data for Utah' do
-        result = GetLocation.search(city:)
+        result = GetDirectGeocoding.search(city:)
 
         expect(result).to include(
           "name" => "Fort Utah",

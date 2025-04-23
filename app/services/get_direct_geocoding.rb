@@ -1,4 +1,4 @@
-class GetLocation
+class GetDirectGeocoding
   include HTTParty
   include HttpErrorHandler
   base_uri "https://api.openweathermap.org/geo/1.0"

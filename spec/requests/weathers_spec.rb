@@ -81,7 +81,7 @@ RSpec.describe "Weathers", type: :request do
   describe "GET /search" do
     context "when city or state is provided and location is found" do
       before do
-        allow(GetLocation).to receive(:search).and_return({ "lat" => lat, "lon" => lon })
+        allow(GetDirectGeocoding).to receive(:search).and_return({ "lat" => lat, "lon" => lon })
       end
 
       it "redirects to root_path with lat and lon params" do
@@ -91,9 +91,9 @@ RSpec.describe "Weathers", type: :request do
       end
     end
 
-    context "when GetLocation returns an error" do
+    context "when GetDirectGeocoding returns an error" do
       before do
-        allow(GetLocation).to receive(:search).and_return({ error: "Not found", code: 404 })
+        allow(GetDirectGeocoding).to receive(:search).and_return({ error: "Not found", code: 404 })
       end
 
       it "renders index with alert flash" do

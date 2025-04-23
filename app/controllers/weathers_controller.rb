@@ -14,7 +14,7 @@ class WeathersController < ApplicationController
 
   def search
     if params[:city].present? || params[:state].present?
-      location = GetLocation.search(city: params[:city], state: params[:state])
+      location = GetDirectGeocoding.search(city: params[:city], state: params[:state])
       if location.is_a?(Hash) && location[:error]
         flash.now[:alert] = location[:error]
         render :index
