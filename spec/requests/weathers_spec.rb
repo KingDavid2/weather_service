@@ -6,6 +6,29 @@ RSpec.describe "Weathers", type: :request do
   let(:units) { 'imperial' }
   let(:api_key) { ENV['OPENWEATHER_API_KEY'] }
 
+  before do
+    stub_request(:get, "https://api.openweathermap.org/geo/1.0/reverse")
+      .with(query: {
+        lat: lat,
+        lon: lon,
+        appid: api_key,
+        limit: 1
+      })
+      .to_return(
+        status: 200,
+        body: [
+          {
+            "name" => "Provo",
+            "lat" => lat,
+            "lon" => lon,
+            "state" => "Utah",
+            "country" => "US"
+          }
+        ].to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+  end
+
   describe "GET /" do
     context "when the call is successful" do
       before do
@@ -49,13 +72,13 @@ RSpec.describe "Weathers", type: :request do
     end
 
     context "when the coordinates are invalid" do
-      let(:bad_lon) { 12345 }
+      let(:lon) { 12345 }
 
       before do
         stub_request(:get, "https://api.openweathermap.org/data/2.5/weather")
           .with(query: {
             lat: lat,
-            lon: bad_lon,
+            lon: lon,
             units: units,
             appid: api_key
           })
@@ -70,7 +93,7 @@ RSpec.describe "Weathers", type: :request do
       end
 
       it "shows an error message in the response body" do
-        get root_path, params: { lat: lat, lon: bad_lon }
+        get root_path, params: { lat: lat, lon: lon }
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("wrong longitude")

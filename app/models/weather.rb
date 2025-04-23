@@ -5,11 +5,15 @@ class Weather < ApplicationRecord
     cached = recent.find_by(lat: lat, lon: lon)
     return cached if cached
 
-    response = GetWeather.search(lat: lat, lon: lon)
+    weather_data = GetWeather.search(lat: lat, lon: lon)
+    location = GetReverseGeocoding.search(lat: lat, lon: lon)
+
     create!(
       lat: lat,
       lon: lon,
-      data: response,
+      city: location["name"],
+      state: location["state"],
+      data: weather_data,
       fetched_at: Time.current
     )
   end

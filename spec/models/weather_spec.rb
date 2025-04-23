@@ -4,11 +4,21 @@ RSpec.describe Weather, type: :model do
   describe '.search' do
     let(:lat) { 40.23684315 }
     let(:lon) { -111.70234036058324 }
-    let(:fake_response) do
+    let(:fake_weather_response) do
       {
         "weather" => [ { "main" => "Clear", "description" => "clear sky" } ],
         "main" => { "temp" => 70.0 },
         "coord" => { "lat" => lat, "lon" => lon }
+      }
+    end
+
+    let(:fake_location_response) do
+      {
+        "name"=>"Provo",
+        "lat"=>lat,
+        "lon"=>lon,
+        "country"=>"US",
+        "state"=>"Utah"
       }
     end
 
@@ -17,7 +27,9 @@ RSpec.describe Weather, type: :model do
         Weather.create!(
           lat: lat,
           lon: lon,
-          data: fake_response,
+          city: 'Provo',
+          state: 'Utah',
+          data: fake_weather_response,
           fetched_at: 30.minutes.ago
         )
       end
@@ -33,14 +45,17 @@ RSpec.describe Weather, type: :model do
 
     context 'when no recent record exists' do
       before do
-        allow(GetWeather).to receive(:search).with(lat: lat, lon: lon).and_return(fake_response)
+        allow(GetWeather).to receive(:search).with(lat: lat, lon: lon).and_return(fake_weather_response)
+        allow(GetReverseGeocoding).to receive(:search).with(lat: lat, lon: lon).and_return(fake_location_response)
       end
 
       let!(:old_weather) do
         Weather.create!(
           lat: lat,
           lon: lon,
-          data: fake_response,
+          city: 'Provo',
+          state: 'Utah',
+          data: fake_weather_response,
           fetched_at: 2.hours.ago
         )
       end
