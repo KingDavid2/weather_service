@@ -70,3 +70,5 @@ end
 gem "httparty", "~> 0.23.1"
 
 gem "dotenv", "~> 3.1"
+
+gem "tailwindcss-rails", "~> 4.2"
